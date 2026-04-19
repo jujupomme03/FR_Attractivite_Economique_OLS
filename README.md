@@ -2,7 +2,7 @@
 
 Study on economic development disparities across French metropolitan departments, with a focus on identifying the structural determinants of entrepreneurial activity using OLS estimation.
 
-**> Report is in French**
+For more details read "Rapport de l'attractivité des départements" (text in french)
 ---
 
 ## Context

@@ -1,94 +1,130 @@
-# Economic Attractiveness of French Departments
+# Attractivité Économique des Départements Français
 
-Study on economic development disparities across French metropolitan departments, with a focus on identifying the structural determinants of entrepreneurial activity using OLS estimation.
+> Étude des disparités de développement économique entre les départements métropolitains français - identification des déterminants structurels de l'entrepreneuriat par estimation MCO.
 
-**For more details read "Rapport de l'attractivité des départements" (text in french)**
-
----
-
-## Context
-
-Business creation is a key indicator of territorial dynamism. Recent data from INSEE shows a slowdown in new firm registrations in France, raising questions about the local factors that drive or hinder entrepreneurship. This project builds on prior work by Levratto et al. (2013) on territorial dynamics and business creation in French departments.
-
-The analysis covers **94 metropolitan departments** for the year 2022. Overseas territories and Corsica were excluded due to missing data and comparability concerns.
+**Pour plus de détails, lire "Rapport_de_l'attractivité_des_départements.pdf"**
 
 ---
 
-## Objective
+## Table des matières
 
-The goal is to explain variations in the proportion of new business creations across French departments using a set of socioeconomic explanatory variables, and to provide a basis for policy recommendations aimed at reducing territorial inequalities.
-
-**Dependent variable:**
-- `pcENT`: proportion of new businesses created in 2022 relative to existing businesses in 2021 (%)
-
-**Explanatory variables:**
-
-| Variable   | Description                                      | Source      |
-|------------|--------------------------------------------------|-------------|
-| `nbENT`    | Number of existing firms in 2021 (thousands)     | INSEE       |
-| `POP`      | Municipal population in 2021 (thousands)         | INSEE       |
-| `DIPL`     | Share of graduates with Bac+3 or above (%)       | INSEE       |
-| `REV`      | Median annual income in 2021 (thousands EUR)     | INSEE       |
-| `gndENT`   | Number of large firms (250+ employees) in 2021   | data.gouv   |
-| `txCHOM`   | Unemployment rate in 2021 (%)                    | INSEE       |
-| `METRO`    | Binary indicator: presence of a metropolis       | collectivites-locales.gouv |
+- [Contexte](#-contexte)
+- [Objectif](#-objectif)
+- [Variables](#-variables)
+- [Méthodologie](#-méthodologie)
+- [Résultats](#-résultats)
+- [Limites](#-limites)
+- [Sources](#-sources-des-données)
 
 ---
 
-## Methodology
+## Contexte
 
-### 1. Descriptive Analysis
-- Univariate statistics (mean, median, standard deviation, min, max) for each variable
-- Distribution plots to identify skewness and outliers
-- Bivariate analysis: simple linear regressions between `pcENT` and each explanatory variable
-- Boxplot comparison by metropolis status
+La création d'entreprises est un indicateur clé du dynamisme territorial. Des données récentes de l'INSEE font état d'un ralentissement des immatriculations de nouvelles entreprises en France, soulevant des questions sur les facteurs locaux qui favorisent ou freinent l'entrepreneuriat.
 
-### 2. Correlation Analysis
-- Pearson correlation matrix to detect multicollinearity
-- Variance Inflation Factor (VIF) analysis
-  - `nbENT`: VIF = 7.6 (high collinearity)
-  - `gndENT`: VIF = 5.5 (moderate collinearity)
+Ce projet s'appuie sur les travaux antérieurs de **Levratto et al. (2013)** sur les dynamiques territoriales et la création d'entreprises dans les départements français.
 
-### 3. Model Selection
-Three specifications were estimated and compared using the Akaike Information Criterion (AIC):
+L'analyse porte sur **94 départements métropolitains** pour l'année **2022**.
 
-| Model | Specification | Adjusted R² |
-|-------|--------------|-------------|
-| Model 1 | Level-level | 0.590 |
-| Model 2 | Level-log | 0.614 |
-| Model 3 | Log-log | 0.686 |
-
-The **log-log model** was retained. Variables `nbENT`, `POP`, and `gndENT` were log-transformed to linearize relationships and reduce the influence of extreme values.
-
-### 4. Robustness Checks
-
-| Test | Purpose | Result |
-|------|---------|--------|
-| White test | Heteroskedasticity | Detected — corrected using White and Newey-West standard errors |
-| Shapiro-Wilk + QQ-plot | Normality of residuals | Rejected — presence of influential observations |
-| Cook's distance | Influential points | Departments 91, 93, 95 identified |
-| Chow test | Structural break (with/without metropolis) | No break detected (p = 0.97) |
-| RESET test | Model misspecification | Correctly specified (p = 0.47) |
-
-### 5. Final Model
-
-The model reached:
-
-- **Adjusted R² = 0.758**
-- All variables significant at 5%, except `METRO`
-- Homoskedasticity and normality of residuals confirmed
-
-## Limitations
-
-- Omitted variables: local cultural factors, regional public policies, and infrastructure are not included.
-- Potential endogeneity between some explanatory variables and the dependent variable.
-- Cross-sectional data only: no temporal dimension to capture trends over time.
+> Les territoires d'outre-mer et la Corse ont été exclus en raison de données manquantes et de problèmes de comparabilité.
 
 ---
 
-## Data Sources
+## Objectif
 
-- [INSEE - Statistiques locales](https://statistiques-locales.insee.fr)
-- [data.gouv - Annuaire des entreprises](https://annuaire-entreprises.data.gouv.fr)
-- [Collectivites-locales.gouv](https://www.collectivites-locales.gouv.fr)
+Expliquer les variations de la **proportion de créations d'entreprises** entre les départements français à l'aide d'un ensemble de variables explicatives socioéconomiques, et fournir des bases pour des recommandations de politique publique visant à réduire les inégalités territoriales.
 
+Pour plus de détails, lire le **[Rapport de l'attractivité des départements](./rapport.pdf)**.
+
+---
+
+## Variables
+
+### Variable dépendante
+
+| Variable | Description |
+|----------|-------------|
+| `pcENT` | Proportion de nouvelles entreprises créées en 2022 par rapport aux entreprises existantes en 2021 (%) |
+
+### Variables explicatives
+
+| Variable | Description | Source |
+|----------|-------------|--------|
+| `nbENT` | Nombre d'entreprises existantes en 2021 (milliers) | INSEE |
+| `POP` | Population municipale en 2021 (milliers) | INSEE |
+| `DIPL` | Part des diplômés de niveau Bac+3 ou supérieur (%) | INSEE |
+| `REV` | Revenu médian annuel en 2021 (milliers EUR) | INSEE |
+| `gndENT` | Nombre de grandes entreprises (250+ salariés) en 2021 | data.gouv |
+| `txCHOM` | Taux de chômage en 2021 (%) | INSEE |
+| `METRO` | Indicateur binaire : présence d'une métropole | collectivites-locales.gouv |
+
+---
+
+## Méthodologie
+
+### 1. Analyse Descriptive
+
+- Statistiques univariées (moyenne, médiane, écart-type, min, max) pour chaque variable
+- Graphiques de distribution pour identifier l'asymétrie et les valeurs aberrantes
+- Analyse bivariée : régressions linéaires simples entre `pcENT` et chaque variable explicative
+- Comparaison par boîtes à moustaches selon le statut métropolitain
+
+### 2. Analyse des Corrélations
+
+- Matrice de corrélation de Pearson pour détecter la multicolinéarité
+- Analyse des Facteurs d'Inflation de la Variance (FIV) :
+
+| Variable | FIV | Niveau de colinéarité |
+|----------|-----|----------------------|
+| `nbENT` | 7,6 |  Forte |
+| `gndENT` | 5,5 |  Modérée |
+
+### 3. Sélection du Modèle
+
+Trois spécifications ont été estimées et comparées à l'aide du **Critère d'Information d'Akaike (AIC)** :
+
+| Modèle | Spécification | R² ajusté |
+|--------|--------------|:---------:|
+| Modèle 1 | Niveau-niveau | 0,590 |
+| Modèle 2 | Niveau-log | 0,614 |
+| ✅ **Modèle 3** | **Log-log** | **0,686** |
+
+Le **modèle log-log** a été retenu. Les variables `nbENT`, `POP` et `gndENT` ont été log-transformées afin de linéariser les relations et de réduire l'influence des valeurs extrêmes.
+
+### 4. Tests de Robustesse
+
+| Test | Objectif | Résultat |
+|------|----------|----------|
+| Test de White | Hétéroscédasticité | Détectée — corrigée par les écarts-types de White et Newey-West |
+| Shapiro-Wilk + QQ-plot | Normalité des résidus | Rejetée — présence d'observations influentes |
+| Distance de Cook | Points influents | Départements **91, 93, 95** identifiés |
+| Test de Chow | Rupture structurelle (avec/sans métropole) | Aucune rupture détectée (p = 0,97) |
+| Test RESET | Mauvaise spécification du modèle | Correctement spécifié (p = 0,47) |
+
+---
+
+## Résultats
+
+Le modèle final atteint :
+
+-  **R² ajusté = 0,758**
+-  Toutes les variables significatives au seuil de **5%**, à l'exception de `METRO`
+-  Homoscédasticité et normalité des résidus confirmées
+
+---
+
+## Limites
+
+- **Variables omises** : les facteurs culturels locaux, les politiques publiques régionales et les infrastructures ne sont pas inclus.
+- **Endogénéité potentielle** entre certaines variables explicatives et la variable dépendante.
+- **Données en coupe transversale uniquement** : absence de dimension temporelle pour saisir les tendances au fil du temps.
+
+---
+
+## Sources des Données
+
+| Source | Lien |
+|--------|------|
+| INSEE - Statistiques locales | [statistiques-locales.insee.fr](https://statistiques-locales.insee.fr) |
+| data.gouv - Annuaire des entreprises | [annuaire-entreprises.data.gouv.fr](https://annuaire-entreprises.data.gouv.fr) |
+| Collectivités locales | [collectivites-locales.gouv.fr](https://www.collectivites-locales.gouv.fr) |
